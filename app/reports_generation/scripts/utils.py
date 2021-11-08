@@ -1,7 +1,7 @@
 import numbers
 from pathlib import Path
+import typing
 from distutils import util
-import distutils
 import csv
 
 
@@ -42,7 +42,7 @@ def get_app_specific_actions(file: Path) -> list:
     app_specific_list = []
     actions = read_csv_by_line(file)
     for action in actions:
-        if bool(distutils.util.strtobool(action['App-specific'])):
+        if bool(util.strtobool(action['App-specific'])):
             app_specific_list.append(action['Action'])
     return app_specific_list
 
@@ -68,3 +68,9 @@ def clean_str(string: str):
     string = string.replace(" ", "_")
     # Return alphanumeric characters from a string, except "_"
     return ''.join(e for e in string if e.isalnum() or e == "_")
+
+
+def save_results(results: typing.List[typing.List], filepath: str):
+    with open(filepath, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerows(results)
